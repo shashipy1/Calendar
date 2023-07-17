@@ -1,17 +1,20 @@
 import React from "react";
 import moment from "moment";
 import "./Calendar.css"
-import EventForm from "./EventForm"
+import EventForm from "./EventForm";
+import ModalCompo from "./Modal";
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+
 
 class Calendar extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = {date: new Date()};
     this.state = {
         date: moment(),
         events: [
           { id: 1, title: "Meeting", date: moment().format("YYYY-MM-DD"), startTime: "00:30", endTime: "01:45" },
-          { id: 2, title: "Gym", date: moment().add(1, "days").format("YYYY-MM-DD"), startTime: "", endTime: "" },
+          { id: 2, title: "Gym", date: moment().add(1, "days").format("YYYY-MM-DD"), startTime: "08:00", endTime: "09:30" },
         ],
         newEvent: { id: null, title: "", date: "", startTime: "", endTime: "" },
         
@@ -25,25 +28,15 @@ class Calendar extends React.Component {
       };    
   }
 
-  // state = {
-  //   date: moment(),
-  //   events: [
-  //     { id: 1, title: "Meeting", date: moment().format("YYYY-MM-DD") },
-  //     { id: 2, title: "Gym", date: moment().add(1, "days").format("YYYY-MM-DD") },
-  //   ],
-  //   newEvent: { id: null, title: "", date: "" },
-    
-  //   isModalOpen: true,
-  //   eventDetails: {
-  //     title: '',
-  //     startDateTime: null,
-  //     endDateTime: null
-  //   }
-  // };
+  openModal = (day, hour) => {
+    let hourSplit = hour.split(":")
+    let hh = Number(hourSplit[0])+1
+    if (hh < 10) { hh = `0${hh}`}
+    let etime = `${hh}:${hourSplit[1]}`
 
-  openModal = () => {
     this.setState({
-      isModalOpen: true
+      isModalOpen: true,
+      eventDetails: {title: "", date:day, startTime:hour, endTime:etime}
     });
     console.log("Opening modal ...", this.state.isModalOpen)
   };
@@ -56,21 +49,18 @@ class Calendar extends React.Component {
 
   renderEventsForDayAndHour = (day, hour) => {
     const { events } = this.state;
-    console.log("events", events, day, hour)
     
-    const filteredEvents = events.filter((event) => event.date === day) // whether event will show or not: 
-    //  && moment(event.time).format('HH:mm') === hour
-    console.log("filteredEvents", filteredEvents)
+    const filteredEvents = events.filter((event) => event.date === day && event.startTime.split(":")[0] === hour.split(":")[0]) // whether event will show or not: 
 
     return (
-      <div>
+      <>
         {filteredEvents.map((event) => (
             <div key={event.id} className="event">
               {event.title}
               <button onClick={() => this.deleteEvent(event.id)}>Delete</button>
             </div>
           ))}
-      </div>
+      </>
     );
   };
   
@@ -87,32 +77,12 @@ class Calendar extends React.Component {
       endTime: event.endTime
     };
     console.log("newEvent", newEvent)
-    events.push(newEvent)
     
     this.setState({
       events: [...events, newEvent]
     });
     console.log("events", events)
   };  
-  
-
-  handleTitleChange = (e) => {
-    this.setState({
-      newEvent: {
-        ...this.state.newEvent,
-        title: e.target.value,
-      },
-    });
-  };
-
-  handleDateChange = (e) => {
-    this.setState({
-      newEvent: {
-        ...this.state.newEvent,
-        date: e.target.value,
-      },
-    });
-  };
 
   deleteEvent = (eventId) => {
     const { events } = this.state;
@@ -137,7 +107,7 @@ class Calendar extends React.Component {
 
 
   render() {
-    const { date, events, newEvent, isModalOpen, eventDetails } = this.state;
+    const { date, isModalOpen, eventDetails } = this.state;
   
     // Render calendar days for the week
     const days = [];
@@ -165,7 +135,8 @@ class Calendar extends React.Component {
           <button onClick={this.nextWeek}>Next Week</button>
         </div>
 
-        {this.state.isModalOpen && (<EventForm onSubmit={this.createEvent} onClose={this.closeModal} />)}
+        {/* {isModalOpen && (<ModalCompo open={isModalOpen} closeModal={this.closeModal} />)} */}
+        {isModalOpen && (<EventForm onsubmit={this.createEvent} onClose={this.closeModal} data={eventDetails} />)}
 
         <table className="calendar-table">
           <thead>
@@ -181,7 +152,7 @@ class Calendar extends React.Component {
               <tr key={hour}>
                 <td>{hour}</td>
                 {days.map((day) => (
-                  <td key={day} onClick={() => this.openModal()}>
+                  <td key={day} onClick={() => this.openModal(day, hour)}>
                     {this.renderEventsForDayAndHour(day, hour)}
                   </td>
                 ))}
@@ -191,47 +162,7 @@ class Calendar extends React.Component {
         </table>        
       </div>
     );
-  }
-  
-  
-//   renderEventsForDayAndHour = (day, hour) => {
-//     const { events } = this.state;
-  
-//     return (
-//       <div>
-//         {events
-//           .filter((event) => event.date === day && moment(event.time).format("HH:mm") === hour)
-//           .map((event) => (
-//             <div key={event.id} className="event">
-//               {event.title}
-//               <button onClick={() => this.deleteEvent(event.id)}>Delete</button>
-//             </div>
-//           ))}
-//       </div>
-//     );
-//   };
-
-
-  // addEvent = (e) => {
-  //   e.preventDefault();
-
-  //   const { events, newEvent } = this.state;
-
-  //   if (newEvent.title && newEvent.date) {
-  //     const newId = events.length > 0 ? events[events.length - 1].id + 1 : 1;
-  //     const newEvents = [
-  //       ...events,
-  //       { ...newEvent, id: newId },
-  //     ];
-
-  //     this.setState({
-  //       events: newEvents,
-  //       newEvent: { id: null, title: "", date: "" },
-  //     });
-  //   }
-  // };
-
-  
+  }  
 }
 
   export default Calendar;

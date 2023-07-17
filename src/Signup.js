@@ -41,8 +41,8 @@ const Signup = ({ setUsername }) => {
             if (response.ok) {
                 setToken(data.token);
                 localStorage.setItem('token', data.token);
+                setUsername(userRegistration.username);
                 navigate("/login");
-                // setUsername(userRegistration.username);
             }
         } catch (error) {
             console.log(error);

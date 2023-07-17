@@ -3,9 +3,9 @@ import React from "react";
 class EventForm extends React.Component {
     state = {
       title: '',
-      date: null,
-      startTime: null,
-      endTime: null
+      date: this.props.data.date,
+      startTime: this.props.data.startTime,
+      endTime: this.props.data.endTime
     };
   
     handleChange = (event) => {
@@ -15,15 +15,13 @@ class EventForm extends React.Component {
     };
   
     handleSubmit = (event) => {
-      event.preventDefault(); 
+      event.preventDefault();
   
       // Extract the event details from the state
       const { title, date, startTime, endTime } = this.state;
   
-      // Perform any validation or data processing here
-  
       // Pass the event details back to the parent component
-      this.props.onSubmit({
+      this.props.onsubmit({
         title, date, startTime, endTime
       });
   
@@ -36,6 +34,7 @@ class EventForm extends React.Component {
       });
   
       this.props.onClose();
+      console.log("finished event form...")
     };
   
     render() {
