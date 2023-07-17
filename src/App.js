@@ -1,25 +1,20 @@
-// import React from 'react';
-// import WeekViewCalendar from './WeekViewCalendar';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Signup from './Signup';
+import Navbar from './Navbar';
+import Calendar from './Calendar';
+import Login from './Login';
 
-// const App = () => {
-//   return (
-//     <div>
-//       <WeekViewCalendar />
-//     </div>
-//   );
-// };
-
-// export default App;
-
-import React from "react";
-import Calendar from "./Calendar";
-
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <Calendar />
-    </div>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/calendar" element={<Calendar />} />
+      </Routes>
+    </Router>
   );
 }
-
-export default App;

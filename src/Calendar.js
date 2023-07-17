@@ -58,8 +58,8 @@ class Calendar extends React.Component {
     const { events } = this.state;
     console.log("events", events, day, hour)
     
-    //  && moment(event.time).format('HH:mm') === hour
     const filteredEvents = events.filter((event) => event.date === day) // whether event will show or not: 
+    //  && moment(event.time).format('HH:mm') === hour
     console.log("filteredEvents", filteredEvents)
 
     return (

@@ -1,0 +1,22 @@
+.header {
+    padding: 10px;
+    background-color: blue;
+}
+.logout-btn {
+    background-color: lightgray;
+    display: block;
+    right: 0;
+    text-align: center;
+  }
+
+@media (max-width: 768px) {
+    .header {
+        height: 60px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        height: 40px;
+    }
+}
