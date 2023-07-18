@@ -4,12 +4,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
 
 const ModalComp = ({ open, closeModal, handleDelete, onsubmit, data }) => {
+  const [eventId, setEventId] = useState(data.id);
   const [title, setTitle] = useState(data.title);
   const [date, setDate] = useState(data.date);
   const [startTime, setStartTime] = useState(data.startTime);
   const [endTime, setEndTime] = useState(data.endTime);
   const [description, setDescription] = useState(data.description);
   const [modalTitle, setModalTitle] = useState(data.modalTitle);
+  console.log(data, "data")
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -22,7 +24,7 @@ const ModalComp = ({ open, closeModal, handleDelete, onsubmit, data }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    onsubmit({ title, date, startTime, endTime, description });
+    onsubmit({ eventId, title, date, startTime, endTime, description });
     setTitle('');
     setDate(null);
     setStartTime(null);
@@ -32,7 +34,7 @@ const ModalComp = ({ open, closeModal, handleDelete, onsubmit, data }) => {
   };
 
   const handleDeleteClick = () => {
-    handleDelete();
+    handleDelete(eventId);
     closeModal();
   };
 

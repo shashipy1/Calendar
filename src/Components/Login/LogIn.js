@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../Register/signup.css';
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const LogIn = () => {
+const LogIn = ({ setUsername }) => {
 
     const navigate = useNavigate();
     const [userRegistration, setUserRegistration] = useState({
@@ -32,6 +32,9 @@ const LogIn = () => {
             const data = await response.json();
             Swal.fire(data.error);
             if (response.ok) {
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('username', data.user.username);
+                setUsername(data.user.username);
                 navigate('/calendar');
             }
         } catch (error) {

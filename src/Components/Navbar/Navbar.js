@@ -1,4 +1,5 @@
-import * as React from 'react';
+// Navbar.js
+import React, {useEffect} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -6,17 +7,28 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
-
-export default function Navbar({ username }) {
-
+const Navbar = ({ username, setUsername }) => {
   const navigate = useNavigate();
+  let uname;
+
   const handleLogout = () => {
+    setUsername("")
     localStorage.removeItem('token');
-    navigate("/");
+    navigate('/');
   };
 
+  useEffect(() => {
+    uname = localStorage.getItem("username", "")
+    if (!localStorage.getItem('token') || !uname) {
+      navigate('/login');
+    }
+    // return () => {
+    // };
+  }, []);
+
+  console.log("username", username)
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -31,17 +43,20 @@ export default function Navbar({ username }) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            calendar
-          </Typography><div>
-            {username ? (
-              <>
-                Welcome, {username}
-                <Button color="inherit" onClick={handleLogout}>Logout</Button>
-              </>
-            ) : null}
-          </div>
+            Calendar
+          </Typography>
+          {uname && (
+            <div>
+              Welcome, {uname}
+              <Button color="inherit" onClick={handleLogout}>
+                Logout
+              </Button>
+            </div>
+          )}
         </Toolbar>
       </AppBar>
     </Box>
   );
-}
+};
+
+export default Navbar;

@@ -16,7 +16,6 @@ const Signup = ({ setUsername }) => {
     });
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [token, setToken] = useState('');
 
     const handleInput = (e) => {
         const name = e.target.name;
@@ -38,10 +37,10 @@ const Signup = ({ setUsername }) => {
             const data = await response.json();
             Swal.fire(data.error); 
             if (response.ok) {
-                setToken(data.token);
                 localStorage.setItem('token', data.token);
+                localStorage.setItem("username", data.username);
                 setUsername(userRegistration.username);
-                navigate("/login");
+                navigate("/calendar");
             }
         } catch (error) {
             console.log(error);

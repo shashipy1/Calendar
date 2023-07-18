@@ -30,7 +30,7 @@ const Calendarfn = () => {
 
   useEffect(() => {
     if (!localStorage.getItem('token')) {
-      // navigate('/signup');
+      navigate('/login');
     }
 
     const storedEvents = JSON.parse(localStorage.getItem("events"));
@@ -53,6 +53,7 @@ const Calendarfn = () => {
 
     let mTitle = "";
     if (event === null) {
+      console.log("if is running ...")
       mTitle = eventDetails.modalTitle;
       setEventDetails({
         modalTitle: mTitle,
@@ -64,8 +65,10 @@ const Calendarfn = () => {
       });
     } else {
       mTitle = "Edit Event";
+      console.log("else is running ...")
       setEventDetails({
         modalTitle: "Edit Event",
+        id: event.id,
         title: event.title,
         date: event.date,
         startTime: event.startTime,
@@ -84,6 +87,8 @@ const Calendarfn = () => {
   };
 
   const renderEventsForDayAndHour = (day, hour) => {
+    
+
     const filteredEvents = events.filter(
       (event) =>
         event.date === day && event.startTime.split(":")[0] === hour.split(":")[0]
@@ -95,7 +100,10 @@ const Calendarfn = () => {
           <div
             key={event.id}
             className="event"
-            onClick={() => openModal(day, hour, event)}
+            onClick={(e) => {
+              e.stopPropagation()
+              openModal(day, hour, event)
+            }}
           >
             {event.title}
           </div>
@@ -105,19 +113,36 @@ const Calendarfn = () => {
   };
 
   const createEvent = (event) => {
-    const newId = events.length > 0 ? events[events.length - 1].id + 1 : 1;
-
-    const newEvent = {
-      id: newId,
+    console.log("event", event)
+    if (event.eventId !== undefined) {
+      let updatedData = {
+      id: event.eventId,
       title: event.title,
       date: event.date,
       startTime: event.startTime,
       endTime: event.endTime,
-      description: event.description,
-    };
-
-    setEvents([...events, newEvent]);
-    localStorage.setItem("events", JSON.stringify([...events, newEvent]));
+      description: event.description
+    }
+      const eventIndex = events.findIndex((e) => e.id === event.eventId);
+      if (eventIndex !== -1) {
+        const updatedEvents = [...events];
+        updatedEvents[eventIndex] = { ...updatedData };
+        setEvents(updatedEvents);
+      }
+    }
+    else {
+      const newId = events.length > 0 ? events[events.length - 1].id + 1 : 1;
+      const newEvent = {
+        id: newId,
+        title: event.title,
+        date: event.date,
+        startTime: event.startTime,
+        endTime: event.endTime,
+        description: event.description,
+      };
+      setEvents([...events, newEvent]);
+      localStorage.setItem("events", JSON.stringify([...events, newEvent]));
+    }
   };
 
   const deleteEvent = (eventId) => {
@@ -162,7 +187,6 @@ const Calendarfn = () => {
             <ArrowRightIcon />
           </button>
         </div>
-
         {isModalOpen && (
           <ModalComp
             open={isModalOpen}
