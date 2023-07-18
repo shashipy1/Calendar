@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import './signup.css';
+import '../Register/signup.css';
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const Login = () => {
+const LogIn = () => {
 
     const navigate = useNavigate();
     const [userRegistration, setUserRegistration] = useState({
@@ -68,4 +68,4 @@ const Login = () => {
     )
 }
 
-export default Login;
+export default LogIn;

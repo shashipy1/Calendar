@@ -63,10 +63,9 @@
   }
   
   .login{    
-    text-decoration: underline;
     text-transform: capitalize;
-    margin-left: 135px;
-    font-size: 22px;
+    margin-left: 32px;
+    font-size: 20px;
   }
   
   /* Responsive Styles */

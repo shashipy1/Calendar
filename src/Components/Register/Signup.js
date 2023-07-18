@@ -36,7 +36,6 @@ const Signup = ({ setUsername }) => {
                 body: JSON.stringify(userRegistration),
             });
             const data = await response.json();
-            // console.log(data.token); 
             Swal.fire(data.error); 
             if (response.ok) {
                 setToken(data.token);
