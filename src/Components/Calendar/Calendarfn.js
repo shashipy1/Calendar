@@ -53,7 +53,6 @@ const Calendarfn = () => {
 
     let mTitle = "";
     if (event === null) {
-      console.log("if is running ...")
       mTitle = eventDetails.modalTitle;
       setEventDetails({
         modalTitle: mTitle,
@@ -65,7 +64,6 @@ const Calendarfn = () => {
       });
     } else {
       mTitle = "Edit Event";
-      console.log("else is running ...")
       setEventDetails({
         modalTitle: "Edit Event",
         id: event.id,
@@ -113,7 +111,6 @@ const Calendarfn = () => {
   };
 
   const createEvent = (event) => {
-    console.log("event", event)
     if (event.eventId !== undefined) {
       let updatedData = {
       id: event.eventId,

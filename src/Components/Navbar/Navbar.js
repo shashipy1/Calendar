@@ -1,5 +1,5 @@
 // Navbar.js
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -24,11 +24,8 @@ const Navbar = ({ username, setUsername }) => {
     if (!localStorage.getItem('token') || !uname) {
       navigate('/login');
     }
-    // return () => {
-    // };
   }, []);
 
-  console.log("username", username)
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">

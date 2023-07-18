@@ -11,7 +11,6 @@ const ModalComp = ({ open, closeModal, handleDelete, onsubmit, data }) => {
   const [endTime, setEndTime] = useState(data.endTime);
   const [description, setDescription] = useState(data.description);
   const [modalTitle, setModalTitle] = useState(data.modalTitle);
-  console.log(data, "data")
 
   const handleChange = (event) => {
     const { name, value } = event.target;
