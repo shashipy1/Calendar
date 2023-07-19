@@ -1,4 +1,3 @@
-// Navbar.js
 import React, { useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -11,18 +10,18 @@ import { useNavigate } from 'react-router-dom';
 
 const Navbar = ({ username, setUsername }) => {
   const navigate = useNavigate();
-  let uname;
+
 
   const handleLogout = () => {
     setUsername("")
     localStorage.removeItem('token');
     navigate('/');
   };
-
+  
   useEffect(() => {
-    uname = localStorage.getItem("username", "")
-    if (!localStorage.getItem('token') || !uname) {
-      navigate('/login');
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUsername(storedUsername);
     }
   }, []);
 
@@ -42,9 +41,9 @@ const Navbar = ({ username, setUsername }) => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Calendar
           </Typography>
-          {uname && (
+          {username && (
             <div>
-              Welcome, {uname}
+              Welcome, {username}
               <Button color="inherit" onClick={handleLogout}>
                 Logout
               </Button>
